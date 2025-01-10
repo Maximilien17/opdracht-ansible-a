@@ -1,0 +1,19 @@
+---
+- name: Configure Loopback Interface with IPv4 and IPv6 addresses
+  hosts: localhost
+  become: yes  # Run as root, because we need elevated privileges to configure network interfaces
+  tasks:
+    - name: Create Loopback Interface
+      command: ip link add lo1 type dummy
+
+    - name: Assign IPv4 Address to Loopback Interface
+      command: ip addr add 192.168.1.1/24 dev lo1
+
+    - name: Assign IPv6 Address 1 to Loopback Interface
+      command: ip -6 addr add 2001:db8::1/64 dev lo1
+
+    - name: Assign IPv6 Address 2 to Loopback Interface
+      command: ip -6 addr add 2001:db8::2/64 dev lo1
+
+    - name: Bring up the Loopback Interface
+      command: ip link set lo1 up
